@@ -1,0 +1,48 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' *"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' *"
+    />
+    <title>Mini Postman</title>
+    <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
+  </head>
+  <body>
+    <h1>Mini Postman</h1>
+    <main>
+      <div class="sidebar">
+        <h3>Navigation</h3>
+        <button id="request_creator">create_item</button>
+        <ul id="request_list"></ul>
+      </div>
+      <div class="requestor-container">
+        <form id="request_options">
+          <input
+            type="text"
+            name="url"
+            placeholder="insert the url"
+            value="https://jsonplaceholder.typicode.com/todos/1"
+          />
+          <select name="method">
+            <option value="GET">GET</option>
+            <option value="POST">POST</option>
+            <option value="PUT">PUT</option>
+            <option value="DELETE">DELETE</option>
+          </select>
+          <button id="requestor">request</button>
+        </form>
+        <div id="server_response"></div>
+      </div>
+    </main>
+  </body>
+  <script type="module" src="../renderer/indexdb.js"></script>
+  <script src="../renderer/element_creator.js"></script>
+  <script type="module" src="../renderer/renderer.js"></script>
+</html>
