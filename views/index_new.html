@@ -1,0 +1,91 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;img-src 'self' data:;"
+    />
+    <meta
+      http-equiv="X-Content-Security-Policy"
+      content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;"
+    />
+  <title>Postman-like Interface with Request List</title>
+  <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+</head>
+
+<body>
+  <nav class="main-sidebar">
+    <div class="sidebar-item">
+      <i class="fas fa-home"></i>
+      <span>Home</span>
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-folder"></i>
+      <span>Collections</span>
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-envelope"></i>
+      <span>APIs</span>
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-cog"></i>
+      <span>Environments</span>
+    </div>
+    <div class="sidebar-item">
+      <i class="fas fa-history"></i>
+      <span>History</span>
+    </div>
+  </nav>
+
+  <main class="main-content">
+    <aside class="request-list-sidebar">
+      <div class="request-list-header">Requests</div>
+      <ul class="request-list" id="request_list"></ul>
+    </aside>
+
+    <form id="request_options">
+      <div class="request-details">
+        <div class="request-bar">
+          <select class="method-select" name="method">
+            <option>GET</option>
+            <option>POST</option>
+            <option>PUT</option>
+            <option>DELETE</option>
+          </select>
+          <input type="text" class="url-input" name="url" placeholder="Enter request URL" />
+          <button class="send-button">Send</button>
+        </div>
+    </form>
+    <div class="tabs">
+      <div class="tab active">Params</div>
+      <div class="tab">Headers</div>
+      <div class="tab">Body</div>
+    </div>
+    <div class="content-area">
+      <div>
+        <h2>Request Parameters</h2>
+        <p>
+          This area would contain form inputs for request parameters, headers,
+          or body content depending on the selected tab.
+        </p>
+        <form id="request_params">
+          <input class="input-param" type="text" name="request_name" placeholder="request name" />
+        </form>
+      </div>
+      <div class="content-response">
+        <h2>Response</h2>
+        <div id="server_response" class="server-response-container"></div>
+      </div>
+    </div>
+  </main>
+</body>
+<script type="module" src="../renderer/indexdb.js"></script>
+<script src="../renderer/element_creator.js"></script>
+<script type="module" src="../renderer/renderer.js"></script>
+
+</html>

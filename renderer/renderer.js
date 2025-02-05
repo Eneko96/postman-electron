@@ -1,13 +1,24 @@
 import { renderJSON } from "./jsonRenderer.js";
 import { addData, deleteDatabase, getAllData, getData } from "./indexdb.js";
 const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
 const api_world = window.api;
 
 const response_container = $("#server_response");
 const request_options = $("#request_options");
-const request_creator = $("#request_creator");
+//const request_creator = $("#request_creator");
 const request_list = $("#request_list");
+const request_params = $("#request_params");
 let current_request = null;
+
+function decodeUrl(url) {
+  let i = 0;
+  for (i = 0; i < url.length; i++) {
+    const ascii = url.charCodeAt(i);
+    if (ascii > 90) break;
+  }
+  return [url.slice(0, i), url.slice(i)];
+}
 
 window.addEventListener("DOMContentLoaded", () => {
   getAllData().then((res) => {
@@ -16,7 +27,10 @@ window.addEventListener("DOMContentLoaded", () => {
         const item = res[i];
         const new_item = window.element_creator(
           "li",
-          { textContent: item.id },
+          {
+            textContent: item.name ?? item.id,
+            className: "request-item",
+          },
           request_list,
         );
         new_item.id = item.id;
@@ -29,8 +43,36 @@ window.addEventListener("DOMContentLoaded", () => {
 request_options.addEventListener("submit", async (evt) => {
   evt.preventDefault();
   const formData = new FormData(request_options);
+  const request_params_form_data = new FormData(request_params);
+
+  const request_params_data = Object.fromEntries(request_params_form_data);
   const data = Object.fromEntries(formData);
 
+  const tmp_id = data.method + data.url;
+  const db_data = await getData(tmp_id);
+
+  console.log(db_data);
+  if (!db_data) {
+    window.element_creator(
+      "li",
+      {
+        textContent: request_params_data.request_name ?? tmp_id,
+        className: "request-item",
+        id: tmp_id,
+        ["data-name"]: request_params_data.request_name,
+      },
+      request_list,
+    );
+  } else {
+    const items = $$(".request-item");
+    const item = Array.prototype.find.call(
+      items,
+      (item) => item.id === db_data.id,
+    );
+    item.click();
+    item.active = true;
+    return;
+  }
   const response = await api_world.request(data);
 
   let div = $(".json-container");
@@ -45,29 +87,30 @@ request_options.addEventListener("submit", async (evt) => {
   }
 
   if (current_request) {
-    current_request.element.style.background = "none";
+    console.log(current_request, "and", request_params_data);
+    current_request.element.style.backgroundColor = "transparent";
     current_request.element.id = data.method + data.url;
-    current_request.element.textContent = `${data.method}: ${new URL(data.url).hostname}`;
+    current_request.element.textContent =
+      request_params_data.request_name ??
+      `${data.method}: ${new URL(data.url).hostname}`;
     current_request.response = response;
-    addData({ id: data.method + data.url, response });
+    addData({
+      id: data.method + data.url,
+      name: request_params_data.request_name,
+      response,
+    });
   }
 
   renderJSON(response, div);
 });
 
-request_creator.addEventListener("click", () => {
-  const new_item = window.element_creator(
-    "li",
-    { textContent: "New request" },
-    request_list,
-  );
-  current_request = { element: new_item };
-});
-
 request_list.addEventListener("click", (evt) => {
   const id = evt.target.id;
+  const [method_input, url_input] = [$(".method-select"), $(".url-input")];
 
-  current_request.element.style.background = "none";
+  if (current_request) {
+    current_request.element.style.backgroundColor = "transparent";
+  }
 
   current_request = { element: evt.target, id };
 
@@ -84,8 +127,14 @@ request_list.addEventListener("click", (evt) => {
     } else {
       div.innerHTML = "";
     }
-    console.log(id);
-    renderJSON(res.response, div);
+
+    const [method, url] = decodeUrl(id);
+    method_input.value = method;
+    url_input.value = url;
+
+    if (res?.response) {
+      renderJSON(res.response, div);
+    }
   });
 });
 

@@ -14,29 +14,37 @@
     <title>Mini Postman</title>
     <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
   </head>
+
   <body>
     <h1>Mini Postman</h1>
     <main>
       <div class="sidebar">
         <h3>Navigation</h3>
-        <button id="request_creator">create_item</button>
-        <ul id="request_list"></ul>
+        <button id="request_creator" class="button">Create item</button>
+        <ul id="request_list" class="request-list"></ul>
       </div>
       <div class="requestor-container">
-        <form id="request_options">
-          <input
-            type="text"
-            name="url"
-            placeholder="insert the url"
-            value="https://jsonplaceholder.typicode.com/todos/1"
-          />
-          <select name="method">
-            <option value="GET">GET</option>
-            <option value="POST">POST</option>
-            <option value="PUT">PUT</option>
-            <option value="DELETE">DELETE</option>
-          </select>
-          <button id="requestor">request</button>
+        <form id="request_options" class="request-options-form">
+          <label class="input-label method"
+            >method
+            <select name="method" id="method-input">
+              <option value="GET">GET</option>
+              <option value="POST">POST</option>
+              <option value="PUT">PUT</option>
+              <option value="DELETE">DELETE</option>
+            </select>
+          </label>
+          <label class="input-label">
+            url
+            <input
+              id="url-input"
+              type="text"
+              name="url"
+              placeholder="insert the url"
+              value="https://jsonplaceholder.typicode.com/todos/1"
+            />
+          </label>
+          <button id="requestor" class="button req-btn">send</button>
         </form>
         <div id="server_response"></div>
       </div>
