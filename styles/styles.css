@@ -207,6 +207,11 @@ body {
   justify-content: space-between;
 }
 
+.content-area[data-tab="headers"],
+.content-area[data-tab="body"] {
+  display: none;
+}
+
 .content-response {
   border-top: 1px solid gray;
   padding-top: 0.5rem;

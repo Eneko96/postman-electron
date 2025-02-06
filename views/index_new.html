@@ -4,15 +4,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;img-src 'self' data:;"
-    />
-    <meta
-      http-equiv="X-Content-Security-Policy"
-      content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;"
-    />
+  <!-- https://developer.mozilla.org/en-US/docs/Web/HTTP/CSP -->
+  <meta http-equiv="Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com;img-src 'self' data:;" />
+  <meta http-equiv="X-Content-Security-Policy"
+    content="default-src 'self'; script-src 'self'; connect-src 'self' *; style-src-elem 'self' https://cdnjs.cloudflare.com; font-src 'self' https://cdnjs.cloudflare.com; img-src 'self' data:;" />
   <title>Postman-like Interface with Request List</title>
   <link rel="stylesheet" type="text/css" href="../styles/styles.css" />
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
@@ -62,11 +58,11 @@
         </div>
     </form>
     <div class="tabs">
-      <div class="tab active">Params</div>
-      <div class="tab">Headers</div>
-      <div class="tab">Body</div>
+      <div class="tab active" data-tab="params">Params</div>
+      <div class="tab" data-tab="headers">Headers</div>
+      <div class="tab" data-tab="body">Body</div>
     </div>
-    <div class="content-area">
+    <div class="content-area" data-tab="params">
       <div>
         <h2>Request Parameters</h2>
         <p>
@@ -80,6 +76,28 @@
       <div class="content-response">
         <h2>Response</h2>
         <div id="server_response" class="server-response-container"></div>
+      </div>
+    </div>
+    <div data-tab="headers" class="content-area">
+      <div>
+      <h2>Request Headers</h2>
+      <p>
+        This area would contain form inputs for request parameters, headers,
+        or body content depending on the selected tab.
+      </p>
+        <form id="request_headers">
+          <input class="input-param" type="text" name="Authorisation" placeholder="Authorisation" />
+          <button type="button" id="header_adder">add more headers</button>
+        </form>
+      </div>
+    </div>
+    <div data-tab="body" class="content-area">
+      <div>
+      <h2>Request body</h2>
+      <p>
+        This area would contain form inputs for request parameters, headers,
+        or body content depending on the selected tab.
+      </p>
       </div>
     </div>
   </main>

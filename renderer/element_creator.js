@@ -1,4 +1,9 @@
-window.element_creator = function(element, options, parent) {
+window.element_creator = function (
+  element,
+  options,
+  parent,
+  position_options = null,
+) {
   const el = document.createElement(element);
   for (opt in options) {
     if (opt.startsWith("data-")) {
@@ -9,7 +14,12 @@ window.element_creator = function(element, options, parent) {
     }
   }
 
-  parent.appendChild(el);
+  if (position_options) {
+    if (position_options.position === "before")
+      parent.insertBefore(el, position_options.relative);
+  } else {
+    parent.appendChild(el);
+  }
 
   return el;
 };

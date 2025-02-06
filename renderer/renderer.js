@@ -6,10 +6,11 @@ const api_world = window.api;
 
 const response_container = $("#server_response");
 const request_options = $("#request_options");
-//const request_creator = $("#request_creator");
 const request_list = $("#request_list");
 const request_params = $("#request_params");
 let current_request = null;
+const tabs = $$(".tab");
+let current_tab = $(".tab.active");
 
 function decodeUrl(url) {
   let i = 0;
@@ -136,6 +137,35 @@ request_list.addEventListener("click", (evt) => {
       renderJSON(res.response, div);
     }
   });
+});
+
+tabs.forEach((tab_el) =>
+  tab_el.addEventListener("click", (evt) => {
+    const tab = evt.target.dataset["tab"];
+    if (tab === current_tab.dataset["tab"]) return;
+    const container = $(`.content-area[data-tab=${tab}]`);
+    const current_container = $(
+      `.content-area[data-tab=${current_tab.dataset["tab"]}]`,
+    );
+
+    current_container.style.display = "none";
+    container.style.display = "flex";
+
+    current_tab.classList.remove("active");
+    current_tab = evt.target;
+    current_tab.classList.add("active");
+  }),
+);
+
+const request_headers = $("#request_headers");
+const request_header_add_btn = $("#header_adder");
+request_header_add_btn.addEventListener("click", () => {
+  window.element_creator(
+    "input",
+    { className: "input-param", type: "text", name: "whatevs" },
+    request_headers,
+    { position: "before", relative: request_header_add_btn },
+  );
 });
 
 window.addEventListener("beforeunload", () => {
